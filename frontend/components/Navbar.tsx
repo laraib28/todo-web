@@ -10,7 +10,7 @@ export default function Navbar() {
   const pathname = usePathname()
   const [loading, setLoading] = useState(false)
 
-  const isAuthenticated = pathname === '/dashboard' || pathname === '/chat'
+  const isAuthenticated = pathname === '/dashboard'
 
   const handleLogout = async () => {
     setLoading(true)
@@ -38,23 +38,9 @@ export default function Navbar() {
               <>
                 <Link
                   href="/dashboard"
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
-                    pathname === '/dashboard'
-                      ? 'text-primary-600 font-semibold'
-                      : 'text-gray-700 hover:text-primary-600'
-                  }`}
+                  className="px-3 py-2 rounded-md text-sm font-medium text-primary-600 font-semibold"
                 >
                   Dashboard
-                </Link>
-                <Link
-                  href="/chat"
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
-                    pathname === '/chat'
-                      ? 'text-primary-600 font-semibold'
-                      : 'text-gray-700 hover:text-primary-600'
-                  }`}
-                >
-                  Chat
                 </Link>
                 <button
                   onClick={handleLogout}

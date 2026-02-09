@@ -1,7 +1,3 @@
-/**
- * API client for backend communication.
- */
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api'
 
 async function apiRequest<T>(
@@ -10,7 +6,7 @@ async function apiRequest<T>(
 ): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
-    credentials: 'include',  // Include cookies with every request
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
@@ -18,7 +14,6 @@ async function apiRequest<T>(
   })
 
   if (response.status === 401) {
-    // Redirect to login on unauthorized
     if (typeof window !== 'undefined') {
       window.location.href = '/login'
     }
@@ -30,7 +25,6 @@ async function apiRequest<T>(
     throw new Error(error.detail || 'Request failed')
   }
 
-  // Handle 204 No Content
   if (response.status === 204) {
     return {} as T
   }
@@ -39,7 +33,6 @@ async function apiRequest<T>(
 }
 
 export const api = {
-  // Auth
   register: (email: string, password: string) =>
     apiRequest('/auth/register', {
       method: 'POST',
@@ -54,7 +47,6 @@ export const api = {
 
   logout: () => apiRequest('/auth/logout', { method: 'POST' }),
 
-  // Tasks
   getTasks: () => apiRequest('/tasks'),
 
   createTask: (task: { title: string; description?: string; priority?: string }) =>
@@ -74,11 +66,4 @@ export const api = {
 
   deleteTask: (id: number) =>
     apiRequest(`/tasks/${id}`, { method: 'DELETE' }),
-
-  // Chat
-  sendChatMessage: (message: string) =>
-    apiRequest('/chat', {
-      method: 'POST',
-      body: JSON.stringify({ message }),
-    }),
 }
